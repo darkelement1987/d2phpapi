@@ -6,21 +6,26 @@ require("config.php");
 if($apiKey == ''){echo "No Api key in config.php";} else {
 ?>
 
-Zoek info over speler:
+<b>Find player equipment:</b>
 <form action="" method="post">
 <p>
-<input type="text" name="player"></input>
+<input type="text" name="player" placeholder="Enter player name"></input>
 </p>
-<input type="submit" value="Zoek">
+<input type="submit" value="Find info">
 </form>
 
 <?php
 if(isset($_POST['player'])){
 $name = $_POST['player'];
-if(empty($name)){echo "Geen input";} else {
+
+if(empty($name)){echo "Please enter a name, input cannot be empty";} else {
 
 // Name to memid
 $json =& apiRequest('/Destiny2/SearchDestinyPlayer/-1/' . $name . '/');
+
+// Check if name exists
+if(!empty($json["Response"])){
+
 $memid = $json["Response"][0]["membershipId"];
 $memtype = $json["Response"][0]["membershipType"];
 
@@ -66,8 +71,8 @@ foreach($chars as $value){
 	}
 }
 
-
-
+// Return error if player doesn't exist
+} else {echo "Invalid Player name given";}
 }
 }
 }
