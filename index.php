@@ -1,3 +1,8 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+</head>
+<body>
 <?php
 
 require_once("functions.php");
@@ -54,7 +59,7 @@ foreach($chars as $value){
 	$charinfo =& apiRequest('/Destiny2/' . $memtype . '/Profile/' . $memid . '/Character/' . $value . '/?components=200');
 	$charitems =& apiRequest('/Destiny2/' . $memtype . '/Profile/' . $memid . '/Character/' . $value . '/?components=205');
 	
-	echo "<h3>Items on character:</h3>";
+	echo "<h3>Weapons on character:</h3>";
 	
 	// Lookup items
 	$items = $charitems["Response"]["equipment"]["data"]["items"];
@@ -66,7 +71,11 @@ foreach($chars as $value){
 	
 	// Item hash to names
 	$weaponname =& apiRequest('/Destiny2/Manifest/DestinyInventoryItemDefinition/' . $itemhash . '/');
+	
+	//Check if weapon
+	if($weaponname["Response"]["itemType"] == "3"){
 	echo $weaponname["Response"]["displayProperties"]["name"] . "<br>";
+	}
 	
 	}
 }
@@ -77,3 +86,5 @@ foreach($chars as $value){
 }
 }
 ?>
+</body>
+</html>
